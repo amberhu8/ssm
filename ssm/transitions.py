@@ -326,16 +326,17 @@ class RecurrentOnlyTransitions(Transitions):
 
         # Parameters linking past observations to state distribution
         self.Ws = npr.randn(K, M)
+        self.Ws = 0.0 * self.Ws
         self.Rs = npr.randn(K, D)
         self.r = npr.randn(K)
 
     @property
     def params(self):
-        return self.Ws, self.Rs, self.r
+        return self.Rs, self.r
 
     @params.setter
     def params(self, value):
-        self.Ws, self.Rs, self.r = value
+        self.Rs, self.r = value
 
     def permute(self, perm):
         """
