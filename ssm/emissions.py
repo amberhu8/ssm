@@ -129,11 +129,11 @@ class _LinearEmissions(Emissions):
 
     @property
     def params(self):
-        return self.Cs, self.Fs, self.ds
+        return self.Cs, self.ds
 
     @params.setter
     def params(self, value):
-        self.Cs, self.Fs, self.ds = value
+        self.Cs, self.ds = value
 
     def permute(self, perm):
         if not self.single_subspace:
@@ -202,6 +202,7 @@ class _LinearEmissions(Emissions):
         # Find the components with the largest power
         self.Cs = np.array(Cs)
         self.ds = np.array(ds)
+        self.Fs = 0.0 * self.Fs
 
         return pca
 
@@ -704,6 +705,8 @@ class PoissonEmissions(_PoissonEmissionsMixin, _LinearEmissions):
         if self.link_name == "log":
             self.Cs /= np.exp(np.linalg.norm(self.Cs, axis=2)[:,:,None])
             self.Fs /= np.exp(np.linalg.norm(self.Fs, axis=2)[:,:,None])
+
+        self.Fs = 0.0 * self.Fs
 
     @ensure_args_are_lists
     def initialize(self, datas, inputs=None, masks=None, tags=None):
